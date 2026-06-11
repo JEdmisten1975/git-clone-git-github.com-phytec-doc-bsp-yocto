@@ -54,7 +54,7 @@
 .. |u-boot-emmc-devno| replace:: 2
 .. |u-boot-recipe-path| replace:: meta-phytec/recipes-bsp/u-boot/u-boot-phytec-imx_*.bb
 .. |u-boot-repo-name| replace:: u-boot-phytec-imx
-.. |u-boot-repo-url| replace:: git://git.phytec.de/u-boot-phytec-imx
+.. |u-boot-repo-url| replace:: https://github.com/phytec/u-boot-phytec-imx
 .. |emmcdev-uboot| replace:: mmc 2
 .. |sdcarddev-uboot| replace:: mmc 1
 
@@ -211,6 +211,7 @@ First Start-up
 *  **imx8mp-phy*.dtbo**: Kernel device tree overlay files
 *  **phytec-qt6demo-image\*.tar.gz**: Root file system
 *  **phytec-qt6demo-image\*.rootfs.wic.xz**: compressed SD card image
+*  **\*.scr.uimg**: compiled bootscripts
 
 .. +---------------------------------------------------------------------------+
 .. INSTALLING THE OS
@@ -234,9 +235,6 @@ select the |som| default bootsource.
 
 .. include:: /bsp/imx-common/installing-os.rsti
 
-.. include:: ../efi.rsti
-.. include:: /bsp/installing-distro-efi.rsti
-
 .. +---------------------------------------------------------------------------+
 .. DEVELOPMENT
 .. +---------------------------------------------------------------------------+
@@ -245,22 +243,6 @@ select the |som| default bootsource.
 
 Development
 ===========
-
-Starting with this release, the boot behaviour in U-Boot changes. Before, kernel
-and device tree came as separate blobs. Now, both will be included in a single
-FIT image blob. Further, the logic for booting the PHYTEC ampliphy distributions
-is moved to a boot script which itself is part of a separate FIT image blob.
-To revert to the old style of booting, you may do
-
-.. code-block:: console
-
-   run legacyboot
-
-.. note::
-
-   This way of booting is deprecated and will be removed in the next release.
-   By default, booting via this command will return an error as kernel and
-   device tree are missing in the boot partition.
 
 .. include:: ../../imx-common/development/standalone_build_preface.rsti
 
@@ -300,7 +282,6 @@ To revert to the old style of booting, you may do
 
 .. code-block::
 
-   mmc_boot
    mmc_boot_fit
    net_boot_fit
 
@@ -318,10 +299,6 @@ For the |kit|, the default values are defined in the U-Boot devicetree
 
            filename-prefixes = "/", "/boot/";
            bootdev-order = "mmc2", "mmc1", "ethernet";
-
-           efi {
-                   compatible = "u-boot,distro-efi";
-           };
 
            rauc {
                    compatible = "u-boot,distro-rauc";
@@ -350,31 +327,45 @@ the efi, rauc and script bootmethods are supported.
 .. code-block::
    :substitutions:
 
+   imx8mp-phyboard-pollux-etml1010g3dra.dtbo
    imx8mp-isi-csi1.dtbo
    imx8mp-isi-csi2.dtbo
    imx8mp-isp-csi1.dtbo
    imx8mp-isp-csi2.dtbo
-   imx8mp-phyboard-pollux-etml1010g3dra.dtbo
-   imx8mp-phyboard-pollux-ph128800t006.dtbo
    imx8mp-phyboard-pollux-peb-av-10.dtbo
    imx8mp-phyboard-pollux-peb-av-10-etml1010g3dra.dtbo
    imx8mp-phyboard-pollux-peb-av-10-ph128800t006.dtbo
    imx8mp-phyboard-pollux-peb-wlbt-05.dtbo
+   imx8mp-phyboard-pollux-ph128800t006.dtbo
+   imx8mp-phyboard-pollux-vm016-csi1.dtbo
+   imx8mp-phyboard-pollux-vm016-csi1-fpdlink-port0.dtbo
+   imx8mp-phyboard-pollux-vm016-csi1-fpdlink-port1.dtbo
+   imx8mp-phyboard-pollux-vm016-csi2.dtbo
+   imx8mp-phyboard-pollux-vm016-csi2-fpdlink-port0.dtbo
+   imx8mp-phyboard-pollux-vm016-csi2-fpdlink-port1.dtbo
+   imx8mp-phyboard-pollux-vm017-csi1.dtbo
+   imx8mp-phyboard-pollux-vm017-csi1-fpdlink-port0.dtbo
+   imx8mp-phyboard-pollux-vm017-csi1-fpdlink-port1.dtbo
+   imx8mp-phyboard-pollux-vm017-csi2.dtbo
+   imx8mp-phyboard-pollux-vm017-csi2-fpdlink-port0.dtbo
+   imx8mp-phyboard-pollux-vm017-csi2-fpdlink-port1.dtbo
+   imx8mp-phyboard-pollux-vm020-csi1.dtbo
+   imx8mp-phyboard-pollux-vm020-csi1-fpdlink-port0.dtbo
+   imx8mp-phyboard-pollux-vm020-csi1-fpdlink-port1.dtbo
+   imx8mp-phyboard-pollux-vm020-csi2.dtbo
+   imx8mp-phyboard-pollux-vm020-csi2-fpdlink-port0.dtbo
+   imx8mp-phyboard-pollux-vm020-csi2-fpdlink-port1.dtbo
+   imx8mp-phyboard-pollux-vm024-csi1.dtbo
+   imx8mp-phyboard-pollux-vm024-csi2.dtbo
    imx8mp-phycore-no-eth.dtbo
-   imx8mp-phycore-no-rtc.dtbo
-   imx8mp-phycore-no-spiflash.dtbo
    imx8mp-phycore-rpmsg.dtbo
-   imx8mp-vm016-csi1.dtbo
-   imx8mp-vm016-csi1-fpdlink.dtbo
-   imx8mp-vm016-csi2.dtbo
-   imx8mp-vm016-csi2-fpdlink.dtbo
-   imx8mp-vm017-csi1.dtbo
-   imx8mp-vm017-csi1-fpdlink.dtbo
-   imx8mp-vm017-csi2.dtbo
-   imx8mp-vm017-csi2-fpdlink.dtbo
 
 .. _imx8mp-head-ubootexternalenv:
 .. include:: /bsp/dt-overlays-ampliphy-boot.rsti
+   :end-before: .. extension-support-marker
+
+.. include:: /bsp/dt-overlays-ampliphy-boot.rsti
+   :start-after: .. change-u-boot-env-in-linux-marker
 
 .. +---------------------------------------------------------------------------+
 .. ACCESSING PERIPHERALS
@@ -451,26 +442,6 @@ our module and board.
    | ethernet0 = end1
 
 .. include:: /bsp/peripherals/network.rsti
-
-.. include:: wireless-network.rsti
-
-.. include:: ../../peripherals/wireless-network.rsti
-   :end-before: .. bluetooth_chapter_start_label
-
-Bluetooth is supported on |sbc| with the PEB-WLBT-05 expansion card. How this
-can be activated is described in the WLAN/Bluetooth section.
-
-.. include:: ../../peripherals/wireless-network.rsti
-   :start-after: .. bluetooth_chapter_start_label
-
-.. note::
-
-   If the connection fails with the error message: "Failed to connect:
-   org.bluez.Error.Failed" try restarting PulseAudio with:
-
-   .. code-block:: console
-
-      target:~$ pulseaudio --start
 
 .. include:: /bsp/imx-common/peripherals/sd-card.rsti
 
@@ -577,6 +548,11 @@ speaker, headphones, and line in signals.
    Using the PEB-AV-10 connector for display output along HDMI as audio output
    is not supported. The audio output device must match the video output device.
 
+.. warning::
+
+   In PD26.1.0 release, PEB-AV-10 audio is not working. Only HDMI audio is
+   supported.
+
 .. include:: /bsp/peripherals/audio.rsti
 
 Device Tree Audio configuration:
@@ -624,9 +600,7 @@ The device tree of LVDS-0 on PEB-AV-10 can be found here:
 .. include:: ../peripherals/pm.rsti
 
 .. include:: ../peripherals/tm.rsti
-
-The device tree description of GPIO Fan can be found here:
-:linux-phytec-imx:`tree/v6.12.49-2.2.0-phy1/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts#L35`
+   :end-before: .. tm-gpio-fan-marker
 
 .. include:: /bsp/peripherals/watchdog.rsti
 

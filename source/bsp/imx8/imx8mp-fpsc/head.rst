@@ -209,6 +209,7 @@ First Start-up
 *  **imx8mp-phyflex-libra*.dtbo**: Kernel device tree overlay files
 *  **phytec-qt6demo-image\*.tar.gz**: Root file system
 *  **phytec-qt6demo-image\*.rootfs.wic.xz**: compressed SD card image
+*  **\*.scr.uimg**: compiled bootscripts
 
 .. +---------------------------------------------------------------------------+
 .. INSTALLING THE OS
@@ -299,10 +300,6 @@ For the |kit|, the default values are defined in the U-Boot devicetree
            filename-prefixes = "/", "/boot/";
            bootdev-order = "mmc2", "mmc1", "ethernet";
 
-           efi {
-                   compatible = "u-boot,distro-efi";
-           };
-
            rauc {
                    compatible = "u-boot,distro-rauc";
            };
@@ -331,6 +328,7 @@ the efi, rauc and script bootmethods are supported.
    :substitutions:
 
    imx8mp-phyflex-libra-rdk-lvds-etml1010g3dra.dtbo
+   imx8mp-phyflex-libra-rdk-lvds-peb-av-10.dtbo
    imx8mp-phyflex-libra-rdk-lvds-ph128800t006-zhc01.dtbo
    imx8mp-phyflex-libra-rdk-vm016-csi1.dtbo
    imx8mp-phyflex-libra-rdk-vm016-csi1-fpdlink-port0.dtbo
@@ -350,9 +348,15 @@ the efi, rauc and script bootmethods are supported.
    imx8mp-phyflex-libra-rdk-vm020-csi2.dtbo
    imx8mp-phyflex-libra-rdk-vm020-csi2-fpdlink-port0.dtbo
    imx8mp-phyflex-libra-rdk-vm020-csi2-fpdlink-port1.dtbo
+   imx8mp-phyflex-libra-rdk-vm024-csi1.dtbo
+   imx8mp-phyflex-libra-rdk-vm024-csi2.dtbo
 
 .. _imx8mp-fpsc-head-ubootexternalenv:
 .. include:: /bsp/dt-overlays-ampliphy-boot.rsti
+   :end-before: .. extension-support-marker
+
+.. include:: /bsp/dt-overlays-ampliphy-boot.rsti
+   :start-after: .. change-u-boot-env-in-linux-marker
 
 .. include:: /bsp/fpsc-device-tree.rsti
 
@@ -561,8 +565,6 @@ connected to a USB 3.0 PHY.
 DT representation for USB Host:
 :linux-phytec-imx:`tree/v6.12.49-2.2.0-phy/arch/arm64/boot/dts/freescale/imx8mp-phyflex-libra-rdk.dts#L295`
 
-.. include:: /bsp/peripherals/usb-device.rsti
-
 CAN FD
 ------
 
@@ -588,14 +590,6 @@ Device Tree CAN configuration of |dt-som|.dtsi:
 and of |dt-carrierboard|.dts:
 :linux-phytec-imx:`tree/v6.12.49-2.2.0-phy/arch/arm64/boot/dts/freescale/imx8mp-phyflex-libra-rdk.dts#L117`
 
-.. include:: /bsp/peripherals/pcie.rsti
-
-Device Tree PCIe configuration of |dt-som|.dtsi:
-:linux-phytec-imx:`tree/v6.12.49-2.2.0-phy/arch/arm64/boot/dts/freescale/imx8mp-phyflex-fpsc-g-som.dtsi#L339`
-
-and of |dt-carrierboard|.dts:
-:linux-phytec-imx:`tree/v6.12.49-2.2.0-phy/arch/arm64/boot/dts/freescale/imx8mp-phyflex-libra-rdk.dts#L245`
-
 .. include:: /bsp/peripherals/video.rsti
 
 .. include:: display.rsti
@@ -610,6 +604,7 @@ Device tree description of LVDS-0 can be found here:
 .. include:: /bsp/peripherals/gpu.rsti
 
 .. include:: /bsp/imx8/peripherals/pm.rsti
+   :end-before: .. suspend_to_ram_start_label
 
 .. include:: /bsp/imx8/peripherals/tm.rsti
    :end-before: .. tm-gpio-fan-marker
