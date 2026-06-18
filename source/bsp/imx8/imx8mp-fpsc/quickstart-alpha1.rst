@@ -1,13 +1,13 @@
 .. General Substitutions
-.. |kit| replace:: **phyCORE-i.MX 8M Plus FPSC Kit**
+.. |kit| replace:: **phyFLEX-i.MX 8M Plus FPSC Kit**
 .. |soc| replace:: i.MX 8M Plus
-.. |som| replace:: phyCORE-|soc| FPSC
+.. |som| replace:: phyFLEX-|soc| FPSC
 .. |sbc| replace:: Libra FPSC
 
 .. Links
-.. |hardware-manual| replace:: Hardware Manual - phyCORE-i.MX 8M Plus FPSC (1617.2/1618.1) (L-1076e.A1)
+.. |hardware-manual| replace:: Hardware Manual - phyFLEX-i.MX 8M Plus FPSC (1617.2/1618.1) (L-1076e.A1)
 .. _hardware-manual: https://www.phytec.de/cdocuments/?doc=pRgRPw
-.. |bsp-manual| replace:: :ref:`phyCORE-i.MX 8MP FPSC ALPHA1 BSP Manual <imx8mp-fpsc-alpha1-bsp-manual>`
+.. |bsp-manual| replace:: :ref:`phyFLEX-i.MX 8MP FPSC ALPHA1 BSP Manual <imx8mp-fpsc-alpha1-bsp-manual>`
 .. |link-bsp-images| replace:: https://download.phytec.de/Software/Linux/BSP-Yocto-i.MX8MP/BSP-Yocto-NXP-i.MX8MP-FPSC-ALPHA1/images/ampliphy-vendor/imx8mp-libra-fpsc-1/
 .. _`static-pdf-dl`: ../../../_static/imx8mp-fpsc-quickstart-alpha1.pdf
 
@@ -66,7 +66,7 @@ Requirements
 Included in the Kit
 -------------------
 
--  Alpha phyCORE-i.MX 8M Plus FPSC SOM on Alpha Libra Development Board
+-  Alpha phyFLEX-i.MX 8M Plus FPSC SOM on Alpha Libra Development Board
    (PD-05023-ALPHA.A0)
 -  Power adapter supplying 24 V / 3,75 A (SV071)
 -  Ethernet cable (WK114)
